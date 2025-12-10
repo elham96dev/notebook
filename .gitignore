@@ -1,0 +1,74 @@
+# Flutter/Dart
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+flutter_export_environment.sh
+
+# Generated plugin registrant
+**/generated_plugin_registrant.dart
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+
+# IntelliJ / Android Studio
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+.dart_tool/
+
+# Android
+.gradle/
+local.properties
+**/captures/
+**/output.json
+**/gradle-wrapper.jar
+**/GeneratedPluginRegistrant.java
+
+# iOS
+Pods/
+Podfile.lock
+Runner/GeneratedPluginRegistrant.*
+Flutter/Flutter.framework
+Flutter/Flutter.podspec
+Flutter/App.framework
+Flutter/ephemeral/
+
+# macOS
+Flutter/ephemeral/
+Pods/
+xcuserdata/
+*.xcworkspace
+*.xcuserstate
+
+# Windows
+windows/flutter/ephemeral/
+
+# Linux
+linux/flutter/ephemeral/
+
+# Web
+web/.dart_tool/
+
+# Coverage
+coverage/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Archives
+*.zip
+*.tar.gz
+
+# Misc
+pubspec.lock    # (optional for app projects; keep for packages)

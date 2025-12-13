@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:notebook/constant/color_constant.dart';
+import 'package:notebook/model/notes.dart';
 import 'package:notebook/widgets/custom_textfield_widget.dart';
 
 class EditUpdateView extends StatefulWidget{
@@ -27,7 +28,17 @@ class _EditUpdateViewState extends State<EditUpdateView> {
     _textController.dispose();
     super.dispose();
   }
-  
+  Notes? initial({required BuildContext context}) {
+    // final modalRoute = ModalRoute.of(context);
+    // if(modalRoute != null){
+    //   final arg = modalRoute.settings.arguments;
+    //   if(arg != null && arg is Notes){
+    //     return arg;
+    //   }
+    // }
+    // return null;
+    return context.argument();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,3 +96,17 @@ class _EditUpdateViewState extends State<EditUpdateView> {
   }
 }
 
+extension GetArg on BuildContext {
+  Notes? argument(){
+    final context = this;
+    final modalRoute = ModalRoute.of(context);
+
+    if (modalRoute != null){
+      final arg =modalRoute.settings.arguments;
+      if(arg != null && arg is Notes){
+        return arg;
+      }
+    }
+    return null;
+  }
+}

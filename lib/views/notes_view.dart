@@ -93,7 +93,10 @@ class _NotesViewState extends State<NotesView> {
     ),
       floatingActionButton: FloatingActionButton(onPressed: (){
         // print("++++++");
-        Navigator.of(context).pushNamed("edit_update_view");
+        Navigator.of(context).pushNamed(
+          "edit_update_view",
+          arguments: null,
+          );
       },
       backgroundColor: Colors.blue.shade900,
       shape: CircleBorder(),
@@ -138,68 +141,74 @@ class _NotesViewState extends State<NotesView> {
           itemCount: notes.length,
            itemBuilder:(context, index) {
             final note = notes[index];
-            return Card(
-              shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18),
-            ),
-              color: gray9,
-              child: Column(
-                children: [
-                  Text(
-                    note.title,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold
-                    ),
-                  ),
-                
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 7.0),
-                    margin: EdgeInsets.only(top: 15,left: 2,right: 2,bottom: 2),
-                    width: double.infinity,
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      note.text,
+            return GestureDetector(
+              onTap: () => Navigator.of(context).pushNamed(
+                "edit_update_view",
+                arguments: note,
+              ),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+              ),
+                color: gray9,
+                child: Column(
+                  children: [
+                    Text(
+                      note.title,
                       style: TextStyle(
-                        color: Colors.white60,
-                        fontSize: 18,
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold
                       ),
-                      maxLines: 5,
-                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  Spacer(),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Text(""),
-                     ),
-                     Expanded(
-                      flex: 1,
-                      child: Container(
-                        height: 30,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(topLeft: Radius.circular(22)),
-                          color: Colors.white,
+                  
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 7.0),
+                      margin: EdgeInsets.only(top: 15,left: 2,right: 2,bottom: 2),
+                      width: double.infinity,
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        note.text,
+                        style: TextStyle(
+                          color: Colors.white60,
+                          fontSize: 18,
                         ),
-                        child: Center(
-                          child: Text(
-                            note.datetime,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black
+                        maxLines: 5,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Spacer(),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text(""),
+                       ),
+                       Expanded(
+                        flex: 1,
+                        child: Container(
+                          height: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(topLeft: Radius.circular(22)),
+                            color: Colors.white,
+                          ),
+                          child: Center(
+                            child: Text(
+                              note.datetime,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black
+                              ),
                             ),
                           ),
-                        ),
-                      ))
-                    ],
-                  ),
-                ],
-              ),
-             );
+                        ))
+                      ],
+                    ),
+                  ],
+                ),
+               ),
+            );
            },
           );
         },

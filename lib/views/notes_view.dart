@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:notebook/constant/color_constant.dart';
+import 'package:notebook/views/service/note_service.dart';
 
 enum MenuAction {delete, selectAll}
 
-class NotesView extends StatelessWidget {
+class NotesView extends StatefulWidget {
   const NotesView({super.key});
 
+  @override
+  State<NotesView> createState() => _NotesViewState();
+}
+
+class _NotesViewState extends State<NotesView> {
+  final _noteService = NoteService();
   @override
   Widget build(BuildContext context) {
   return Scaffold(
@@ -96,15 +103,41 @@ class NotesView extends StatelessWidget {
         color: Colors.white,
       ),
       ),
-      body: Container(
-        margin: EdgeInsets.all(3),
-        child: GridView.builder(
+      body: 
+      FutureBuilder(
+        future: _noteService.getNotes(),
+        builder: (context, snapshot){
+          print("------------------------");
+          print("snapshot data ");
+          print(snapshot.hasData);
+          print("------------------------");
+          if (!snapshot.hasData){
+            //has not data
+            return CircularProgressIndicator(
+              color: Colors.blueAccent,
+            );
+          }
+          //has data
+          final notes = snapshot.data ?? [];
+          if (notes.isEmpty){
+            return Center(
+              child: Text('Don\'t have any note!',
+              style: TextStyle(
+                color: Colors.grey.shade300,
+                fontWeight: FontWeight.w400,
+              ),
+              ),
+            ); 
+          }
+          //has note
+          return GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 1 / 1.2,
             ),
-          itemCount: 3,
+          itemCount: notes.length,
            itemBuilder:(context, index) {
+            final note = notes[index];
             return Card(
               shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18),
@@ -113,7 +146,7 @@ class NotesView extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    "Title",
+                    note.title,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 22,
@@ -127,7 +160,7 @@ class NotesView extends StatelessWidget {
                     width: double.infinity,
                     alignment: Alignment.topLeft,
                     child: Text(
-                      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+                      note.text,
                       style: TextStyle(
                         color: Colors.white60,
                         fontSize: 18,
@@ -153,7 +186,7 @@ class NotesView extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            "9/12/2025",
+                            note.datetime,
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -163,14 +196,14 @@ class NotesView extends StatelessWidget {
                         ),
                       ))
                     ],
-                  )
+                  ),
                 ],
               ),
              );
            },
-           ),
-      ),
-      
-  );
+          );
+        },
+        ),
+      );
   }
 }

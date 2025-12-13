@@ -96,9 +96,9 @@ const textColumn = "text";
 const datetimeColumn = "datetime";
 
 const createTable = ''' CREATE TABLE IF NOT EXISTS "notes" (
-  "id" INTIGER NOT NULL,
+  "id" INTEGER NOT NULL,
   "title" TEXT,
   "text" TEXT,
   "datetime" TEXT,
-  PRIMARY KYE("id" AUTOINCREMENT)
+  PRIMARY KEY("id" AUTOINCREMENT)
 )''';

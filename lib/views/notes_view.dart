@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notebook/constant/color_constant.dart';
+import 'package:notebook/model/notes.dart';
 import 'package:notebook/views/service/note_service.dart';
 
 enum MenuAction {delete, selectAll}
@@ -13,6 +14,8 @@ class NotesView extends StatefulWidget {
 
 class _NotesViewState extends State<NotesView> {
   final _noteService = NoteService();
+  Future<List<Notes>> noteFuture = NoteService().getNotes();
+
   @override
   Widget build(BuildContext context) {
   return Scaffold(
@@ -96,7 +99,14 @@ class _NotesViewState extends State<NotesView> {
         Navigator.of(context).pushNamed(
           "edit_update_view",
           arguments: null,
+          ).then((value) {
+            setState(() {
+              noteFuture = _noteService.getNotes();
+            }
           );
+        }
+      );
+
       },
       backgroundColor: Colors.blue.shade900,
       shape: CircleBorder(),
@@ -108,7 +118,7 @@ class _NotesViewState extends State<NotesView> {
       ),
       body: 
       FutureBuilder(
-        future: _noteService.getNotes(),
+        future: noteFuture,
         builder: (context, snapshot){
           print("------------------------");
           print("snapshot data ");

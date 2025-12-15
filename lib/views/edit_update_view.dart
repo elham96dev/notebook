@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:notebook/constant/color_constant.dart';
 import 'package:notebook/model/notes.dart';
+import 'package:notebook/views/service/note_service.dart';
 import 'package:notebook/widgets/custom_textfield_widget.dart';
 
 class EditUpdateView extends StatefulWidget{
@@ -16,6 +17,8 @@ class _EditUpdateViewState extends State<EditUpdateView> {
 
   late final TextEditingController _titleController;
   late final TextEditingController _textController;
+  final NoteService _noteService = NoteService();
+  Notes? note;
   @override
   void initState() {
     _titleController = TextEditingController();
@@ -28,7 +31,7 @@ class _EditUpdateViewState extends State<EditUpdateView> {
     _textController.dispose();
     super.dispose();
   }
-  Notes? initial({required BuildContext context}) {
+  void initial({required BuildContext context}) {
     // final modalRoute = ModalRoute.of(context);
     // if(modalRoute != null){
     //   final arg = modalRoute.settings.arguments;
@@ -37,11 +40,12 @@ class _EditUpdateViewState extends State<EditUpdateView> {
     //   }
     // }
     // return null;
-    return context.argument();
+    note = context.argument();
   }
 
   @override
   Widget build(BuildContext context) {
+    initial(context: context);
    return Scaffold(
     backgroundColor: black5,
     appBar: AppBar(
@@ -62,7 +66,22 @@ class _EditUpdateViewState extends State<EditUpdateView> {
       iconTheme: IconThemeData(color: Colors.white),
       centerTitle: true,
       actions: [
-      IconButton(onPressed:() {},
+      IconButton(onPressed:() {
+        if ( note != null) {
+          //update
+        } else {
+          //creat
+          final dateTime = DateTime.now();
+          _noteService.insert(
+            notes: Notes(
+              title: _titleController.text,
+              text: _textController.text,
+              datetime: "${dateTime.day}/${dateTime.month}/${dateTime.year}"
+            ),
+          );
+          Navigator.pop(context);
+        }
+      },
        icon: Icon(
         Icons.check,
         color: Colors.white,

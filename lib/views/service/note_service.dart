@@ -38,7 +38,7 @@ class NoteService {
     final db = await _shared.database;
     final rows = await db.delete(
       noteTable,
-      where: "id=?",
+      where: "id = ?",
       whereArgs: [id],
     );
     return rows;

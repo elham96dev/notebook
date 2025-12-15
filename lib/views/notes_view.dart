@@ -40,10 +40,35 @@ class _NotesViewState extends State<NotesView> {
             size: 34,
             ),
             color: Colors.grey.shade800,
-            onSelected: (value) {
+            onSelected: (value) async {
               switch(value) {
                 case MenuAction.delete:
-                  print("delete all");
+                  //delet all
+                  final result = await showDialog(context: context, builder: (context) {
+                    return AlertDialog(
+                      title: Text("Delete all notes"),
+                      content: Text("Are you sure delete all notes?"),
+                      actions: [
+                        TextButton(onPressed:() {
+                          Navigator.pop(context, true);
+                        }, child: Text("Yes"),
+                        ),
+                        TextButton(onPressed:() {
+                          Navigator.pop(context, false);
+                        }, child: Text("No"),
+                        ),
+                      ],
+                    );
+                 },
+                );
+                    if (result != null && result) {
+                      //dlete all
+                     await _noteService.deleteAll();
+                     setState(() {
+                       noteFuture =  _noteService.getNotes();
+                     });
+                    }
+                  
                 break;
                 case MenuAction.selectAll:
                   print("select all");
@@ -120,10 +145,6 @@ class _NotesViewState extends State<NotesView> {
       FutureBuilder(
         future: noteFuture,
         builder: (context, snapshot){
-          print("------------------------");
-          print("snapshot data ");
-          print(snapshot.hasData);
-          print("------------------------");
           if (!snapshot.hasData){
             //has not data
             return CircularProgressIndicator(
@@ -153,7 +174,8 @@ class _NotesViewState extends State<NotesView> {
             final note = notes[index];
             return GestureDetector(
               onLongPress:() async {
-                final result = showDialog(
+                final result = await showDialog(
+                  //barrierDismissible: false,
                   context: context,
                   builder:(context) {
                     return AlertDialog(
@@ -171,14 +193,27 @@ class _NotesViewState extends State<NotesView> {
                           child: Text("Yes"),
                           ),
                            TextButton(
-                          onPressed:() {Navigator.pop(context, false);},
+                          onPressed:() {
+                            Navigator.pop(context, false);
+                          
+                            },
                           child: Text("No"),
                         ),
                       ],
                     );
                   },
                 );
-               print(result); 
+
+                
+                if(result != null && result){
+                  //delete
+                 await _noteService.deleteNote(id: note.id!);
+                  setState(() {
+                    noteFuture = _noteService.getNotes();
+                  });
+                }
+                
+
               },
               onTap: () => Navigator.of(context).pushNamed(
                 "edit_update_view",

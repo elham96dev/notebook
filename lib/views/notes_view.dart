@@ -152,6 +152,34 @@ class _NotesViewState extends State<NotesView> {
            itemBuilder:(context, index) {
             final note = notes[index];
             return GestureDetector(
+              onLongPress:() async {
+                final result = showDialog(
+                  context: context,
+                  builder:(context) {
+                    return AlertDialog(
+                      title: Text("Delete note",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                      ),
+                      content: Text("Are you sure delete this note?"),
+                      actions: [
+                        TextButton(
+                          onPressed:() {
+                            Navigator.pop(context, true);
+                          },
+                          child: Text("Yes"),
+                          ),
+                           TextButton(
+                          onPressed:() {Navigator.pop(context, false);},
+                          child: Text("No"),
+                        ),
+                      ],
+                    );
+                  },
+                );
+               print(result); 
+              },
               onTap: () => Navigator.of(context).pushNamed(
                 "edit_update_view",
                 arguments: note,

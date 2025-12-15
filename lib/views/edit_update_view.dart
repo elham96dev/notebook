@@ -41,6 +41,10 @@ class _EditUpdateViewState extends State<EditUpdateView> {
     // }
     // return null;
     note = context.argument();
+    if (note!= null){
+      _textController.text = note!.text;
+      _titleController.text = note!.title;
+    }
   }
 
   @override
@@ -69,6 +73,16 @@ class _EditUpdateViewState extends State<EditUpdateView> {
       IconButton(onPressed:() {
         if ( note != null) {
           //update
+          final dateTime = DateTime.now();
+          _noteService.update(
+            notes: Notes(
+              id: note!.id,
+              title: _titleController.text,
+              text: _textController.text,
+              datetime: "${dateTime.day}/${dateTime.month}/${dateTime.year}"
+            ),
+          );
+            Navigator.pop(context);
         } else {
           //creat
           final dateTime = DateTime.now();
@@ -79,7 +93,7 @@ class _EditUpdateViewState extends State<EditUpdateView> {
               datetime: "${dateTime.day}/${dateTime.month}/${dateTime.year}"
             ),
           );
-          Navigator.pop(context);
+           Navigator.pop(context);
         }
       },
        icon: Icon(

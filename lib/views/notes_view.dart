@@ -155,7 +155,13 @@ class _NotesViewState extends State<NotesView> {
               onTap: () => Navigator.of(context).pushNamed(
                 "edit_update_view",
                 arguments: note,
-              ),
+              ).then((value){
+                setState(() {
+                  noteFuture = _noteService.getNotes();
+                }
+              );
+            }
+            ),
               child: Card(
                 shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18),
